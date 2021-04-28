@@ -1,0 +1,178 @@
+enum Tipo{
+    CAMISA(Categoria.PARTE_SUP, (ALGODON,SEDA)),
+    PANTALON(Categoria.PARTE_INF,(JEAN,ALGODON)),
+    ZAPATOS(Categoria.CALZADO,(CUERO)),
+    ANTEOJOS_DE_SOL(Categoria.ACCESORIOS,(PLASTICO,MADERA));
+
+    Categoria categoria;
+    Lista<Material> materialesDisponibles;
+
+    Tipo(Categoria categoria,Lista<Material> materialesDisponibles){
+        this.categoria=categoria;
+        this.materialesDisponibles = materialesDisponibles;
+    }
+    Categoria getCategoria(){return categoria;}
+    Lista<Material> getMaterialesDisponibles(){return materialesDisponibles;}
+}
+
+enum Categoria{
+    PARTE_SUP,PARTE_INF,CALZADO,ACCESORIOS;
+}
+
+enum Material{
+    ALGODON,NYLON,SEDA,JEAN,PLASTICO,MADERA;
+}
+
+enum Trama{
+    LISA,RAYADA,LUNARES,CUADROS,ESTAMPADA;
+}
+
+//---------------PRENDA-------------------//
+
+clase BuilderDePrenda{
+    Tipo tipo;
+    Trama trama = LISA;
+    Material material;
+    Color colorPrincipal;
+    Color colorSecundario;
+
+    BuilderDePrenda(Tipo tipo){
+        this.tipo = tipo;
+    }
+
+    boolean materialValido(Material materialPrenda){
+        return tipo.getMaterialesDisponibles().contains(materialPrenda);
+    }
+
+    //Setteo obligatorio (Color Principal y Material)
+
+    void setAspectoPrincipal(Color colorPrincipalPrenda,Material materialPrenda){
+        if(!materialValido(materialPrenda)){
+            tirar excepcionMaterialInvalido("El material no esta disponible para ese tipo")
+        }
+        material = materialPrenda;
+        colorPrincipal = colorPrincipalPrenda;
+    }
+
+    //Setteo opcional (Trama y Color Secundario)
+
+    void setColorSecundario(Color colorSecundarioPrenda){
+        colorSecundario = colorSecundarioPrenda;
+    }
+    void setTrama(Trama tramaPrenda){
+        trama = tramaPrenda;
+    }
+
+    //Guardar borrador(suponemos que este borrador usa el patron singleton,
+    //solo puede haber una instancia de borrador que tenga la ultima prenda que
+    //estaba creando)
+
+    void guardarBorrador(BorradorDePrenda borradorUltimaPrenda){
+        borradorUltimaPrenda.agregarPrendaPendiente(this);
+    }
+
+    //Crear prenda con las caracteristicas elegidas
+
+    Prenda crearPrenda()
+        Prenda nuevaPrenda = new Prenda();
+        nuevaPrenda.setCaracteristicas(tipo, trama, material, colorPrincipal, colorSecundario);
+        return nuevaPrenda;
+    }   
+}
+
+clase Prenda{
+    Tipo tipo;
+    Trama trama;
+    Categoria categoria;
+    Material material;
+    Color colorPrincipal;
+    Color colorSecundario;
+    
+    void setCaracteristicas(Tipo tipo,Trama trama,Material material,Color colorPrincipal,Color colorSecundario){
+        this.tipo = tipo;
+        this.categoria = tipo.getCategoria();
+        this.trama = trama;
+        this.material = material;
+        this.colorPrincipal = colorPrincipal;
+        this.colorSecundario = colorSecundario;
+    }
+
+    Categoria getCategoria(){
+        return categoria;
+    }
+}
+
+clase BorradorDePrenda{
+    BuilderDePrenda prendaBorrador;
+
+    void agregarPrendaPendiente(BuilderDePrenda prendaEnProceso){
+        prendaBorrador = prendaEnProceso;
+    }
+
+    BuilderDePrenda recuperarBorrador(){
+        BuilderDePrenda prendaARecuperar = prendaBorrador;
+        prendaBorrador = NULL;
+        return prendaARecuperar;
+    }
+
+    //Como se aclaro arriba habria una unica instancia de borrador
+}
+
+//-------------ATUENDO------------//
+
+clase Atuendo{
+    Prenda parteSuperior;
+    Prenda parteInferior;
+    Prenda calzado;
+    Prenda accesorio;
+
+    Atuendo(Prenda parteSuperior,Prenda parteInferior,Prenda calzado,Prenda accesorio){
+        verificarAtuendo(parteSuperior,parteInferior,calzado,accesorio);
+        this.parteSuperior = parteSuperior;
+        this.parteInferior = parteInferior;
+        this.calzado = calzado;
+        this.accesorio = accesorio;
+    }
+
+    void verificarCategoria(Prenda prenda, Categoria categoria){
+        if(prenda.getCategoria() != categoria)
+        tirar excepcionCategoriaErronea("La categoria no concuerda");
+    }
+
+    void verificarAtuendo(Prenda parteSup,Prenda parteInf,Prenda calza,Prenda acces){
+        verificarCategoria(parteSup, PARTE_SUP);
+        verificarCategoria(parteInf, PARTE_INF);
+        verificarCategoria(calza, CALZADO);
+        verificarCategoria(acces, ACCESORIOS);
+    }
+
+}
+
+clase Uniforme extends Atuendo{
+
+    Uniforme(Prenda parteSuperior,Prenda parteInferior,Prenda calzado){
+        verificarUniforme(parteSuperior,parteInferior,calzado);
+        this.parteSuperior = parteSuperior;
+        this.parteInferior = parteInferior;
+        this.calzado = calzado;
+    }
+
+    verificarUniforme(Prenda parteSup,Prenda parteInf,Prenda calza){
+        verificarCategoria(parteSup, PARTE_SUP);
+        verificarCategoria(parteInf, PARTE_INF);
+        verificarCategoria(calza, CALZADO);
+    }
+}
+
+
+/*  
+Mensaje final: 
+
+    En este caso use un builder para poder identificar cuando una prenda no estaba
+terminada, ya que cuando lo esta se crea utilizando un metodo que la buildea. Por eso mismo
+prenda no tiene constructor pero si setters. 
+    Por otro lado la otra duda importante que me quedo era la diferencia entre los uniformes y un 
+"atuendo comun", no termine de entender bien ese requerimiento
+    Por lo demas a mi se me ocurrio plantearlo asi pero puede estar horriblemente ejecutado, con cosas
+de las que ni yo estaba muy seguro como dejar en Null algunos atributos.
+*/
