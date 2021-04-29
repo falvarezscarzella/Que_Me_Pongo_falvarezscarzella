@@ -43,6 +43,13 @@ clase BuilderDePrenda{
     boolean materialValido(Material materialPrenda){
         return tipo.getMaterialesDisponibles().contains(materialPrenda);
     }
+    
+    void verificadorPrenda(){
+        if(material.isNull())
+        tirar excepcionMaterialNoDefinido();
+        if(colorPrincipal.isNull())
+        tirar excepcionColorPrincipalNoDefinido();
+    }
 
     //Setteo obligatorio (Color Principal y Material)
 
@@ -74,6 +81,7 @@ clase BuilderDePrenda{
     //Crear prenda con las caracteristicas elegidas
 
     Prenda crearPrenda()
+        verificadorPrenda();
         Prenda nuevaPrenda = new Prenda();
         nuevaPrenda.setCaracteristicas(tipo, trama, material, colorPrincipal, colorSecundario);
         return nuevaPrenda;
