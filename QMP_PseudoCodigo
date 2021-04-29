@@ -1,10 +1,10 @@
 //-----------MODELADO DE CARACTERISTICAS-------------
 
 enum Tipo{
-    CAMISA(Categoria.PARTE_SUP, (ALGODON,SEDA)),
-    PANTALON(Categoria.PARTE_INF,(JEAN,ALGODON)),
-    ZAPATOS(Categoria.CALZADO,(CUERO)),
-    ANTEOJOS_DE_SOL(Categoria.ACCESORIOS,(PLASTICO,MADERA));
+    CAMISA(Categoria.PARTE_SUP, (Material.ALGODON,Material.SEDA)),
+    PANTALON(Categoria.PARTE_INF,(Material.JEAN,Material.ALGODON)),
+    ZAPATOS(Categoria.CALZADO,(Material.CUERO)),
+    ANTEOJOS_DE_SOL(Categoria.ACCESORIOS,(Material.PLASTICO,Material.MADERA));
 
     Categoria categoria;
     Lista<Material> materialesDisponibles;
@@ -45,7 +45,7 @@ clase Color{
 
 clase BuilderDePrenda{
     Tipo tipo;
-    Trama trama = LISA;
+    Trama trama = Trama.LISA;
     Material material;
     Color colorPrincipal;
     Color colorSecundario;
@@ -180,9 +180,9 @@ clase Uniforme extends Atuendo{
     }
 
     verificarUniforme(Prenda parteSup,Prenda parteInf,Prenda calza){
-        verificarCategoria(parteSup, PARTE_SUP);
-        verificarCategoria(parteInf, PARTE_INF);
-        verificarCategoria(calza, CALZADO);
+        verificarCategoria(parteSup, Categoria.PARTE_SUP);
+        verificarCategoria(parteInf, Categoria.PARTE_INF);
+        verificarCategoria(calza, Categoria.CALZADO);
     }
 }
 
