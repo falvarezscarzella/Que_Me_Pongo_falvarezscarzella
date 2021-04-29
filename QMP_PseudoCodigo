@@ -1,3 +1,5 @@
+//-----------MODELADO DE CARACTERISTICAS-------------
+
 enum Tipo{
     CAMISA(Categoria.PARTE_SUP, (ALGODON,SEDA)),
     PANTALON(Categoria.PARTE_INF,(JEAN,ALGODON)),
@@ -25,6 +27,18 @@ enum Material{
 
 enum Trama{
     LISA,RAYADA,LUNARES,CUADROS,ESTAMPADA;
+}
+
+clase Color{
+    int nivelRojo;
+    int nivelVerde;
+    int nivelAzul;
+    
+    Color(int nivelRojo,int nivelVerde,int nivelAzul){
+        this.nivelRojo = nivelRojo;
+        this.nivelVerde = nivelVerde;
+        this.nivelAzul = nivelAzul;
+    }
 }
 
 //---------------PRENDA-------------------//
