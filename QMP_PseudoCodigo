@@ -124,16 +124,16 @@ clase Prenda{
     }
 }
 
-clase BorradorDePrenda{
-    BuilderDePrenda prendaBorrador;
+clase Usuario{
+    Lista<BuilderDePrenda> prendaBorrador = new Lista<>();
 
     void agregarPrendaPendiente(BuilderDePrenda prendaEnProceso){
-        prendaBorrador = prendaEnProceso;
+        prendaBorrador.add(prendaEnProceso);
     }
 
-    BuilderDePrenda recuperarBorrador(){
-        BuilderDePrenda prendaARecuperar = prendaBorrador;
-        prendaBorrador = NULL;
+    BuilderDePrenda recuperarBorrador(int indice){
+        BuilderDePrenda prendaARecuperar = prendaBorrador.get(indice);
+        prendaBorrador.remove(indice);
         return prendaARecuperar;
     }
 
