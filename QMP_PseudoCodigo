@@ -84,9 +84,7 @@ clase BuilderDePrenda{
         trama = tramaPrenda;
     }
 
-    //Guardar borrador(suponemos que este borrador usa el patron singleton,
-    //solo puede haber una instancia de borrador que tenga la ultima prenda que
-    //estaba creando)
+    //Guardar borrador
 
     void guardarBorrador(BorradorDePrenda borradorUltimaPrenda){
         borradorUltimaPrenda.agregarPrendaPendiente(this);
