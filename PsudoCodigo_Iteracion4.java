@@ -1,15 +1,15 @@
 enum Tipo{
-    CAMISA(Categoria.PARTE_SUP, (ALGODON,SEDA),40),
-    PANTALON(Categoria.PARTE_INF,(JEAN,ALGODON,ACETATO),22),
-    ZAPATOS(Categoria.CALZADO,(CUERO),25),
-    ANTEOJOS_DE_SOL(Categoria.ACCESORIOS,(PLASTICO,MADERA),40),
-    CHOMBA(Categoria.PARTE_SUP,(PIQUE),30),
-    SHORT(Categoria.PARTE_INF,(ALGODON,NYLON),40),
-    CINTURON(Categoria.ACCESORIOS,(CUERO),40);
+    CAMISA(Categoria.PARTE_SUP, [ALGODON,SEDA],40),
+    PANTALON(Categoria.PARTE_INF,[JEAN,ALGODON,ACETATO],22),
+    ZAPATOS(Categoria.CALZADO,[CUERO],25),
+    ANTEOJOS_DE_SOL(Categoria.ACCESORIOS,[PLASTICO,MADERA],40),
+    CHOMBA(Categoria.PARTE_SUP,[PIQUE],30),
+    SHORT(Categoria.PARTE_INF,[ALGODON,NYLON],40),
+    CINTURON(Categoria.ACCESORIOS,[CUERO],40);
 
     Categoria categoria;
     Double temperaturaMax; //En celsius
-    Lista<Material> materialesDisponibles;
+    Lista<Material> materialesDisponibles; // En los enums lo puse entre corchetes para que sea mas facil de leer
 
     Tipo(Categoria categoria,Lista<Material> materialesDisponibles,Double temperaturaMax){
         this.categoria=categoria;
@@ -177,11 +177,11 @@ clase Atuendo{
 }
 
 clase SugeridorDeAtuendos {
-    List<Prenda> prendasPosibles;
+    List<Prenda> prendasPosibles; // Seria la lista de prendas del usuario
     Double temperaturaActual;
 
     SugeridorDeAtuendos(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
-        this.temperaturaActual = AccuWeatherAPI.getWeather(ciudadDondeSeEncuentra)
+        this.temperaturaActual = ServicioDeClima.getWeather(ciudadDondeSeEncuentra)
             .get(0)
             .get("Temperature")
             .get("Value");
@@ -190,12 +190,12 @@ clase SugeridorDeAtuendos {
 
     Prenda sugerirParteSuperior() {
         SugeridorDePrendas sugeridorParteSuperior = new SugeridorDePrendas(temperaturaActual,Categoria.PARTE_SUP);
-        return sugeridorParteSuperior.sugerirPrenda();
+        return sugeridorParteSuperior.sugerirPrenda(prendasPosibles);
     }
 
     Prenda sugerirParteInferior() {
         SugeridorDePrendas sugeridorParteInferior = new SugeridorDePrendas(temperaturaActual,Categoria.PARTE_INF);
-        return sugeridorParteSuperior.sugerirPrenda();
+        return sugeridorParteSuperior.sugerirPrenda(prendasPosibles);
     }
 
     // Y asi con accesorios y calzado
@@ -226,7 +226,23 @@ clase SugeridorDePrendas {
     }
 }
 
-final clase AccuWeatherAPI {
+class ServicioDeClima {
+    ClimaAPI api = new AccuWeatherAPI();
+
+    static void setAPIdelClima(ClimaAPI apiNueva) {
+        this.api = apiNueva;
+    }
+
+    List<Map<String, Object>> obtenerClima(String ciudad) {
+        return api.getWeather(ciudad);
+    }
+}
+
+interfaz ClimaAPI {
+     public final List<Map<String, Object>> getWeather(String ciudad);
+}
+
+clase AccuWeatherAPI{
 
     public final List<Map<String, Object>> getWeather(String ciudad) {
 		return Arrays.asList(new HashMap<String, Object>(){{
