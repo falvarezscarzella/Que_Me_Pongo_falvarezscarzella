@@ -280,12 +280,14 @@ categoria que necesita para que trabaje con eso y no devuelva una categoria erro
 
 - Por ahora y como entiendo que el usuario no puede crear atuendos, la creacion de los mismos se hace unicamente mediante un sugeridor,
 especificandole en que lugar del mundo se encuentra para que accuweather pueda indocarle la temperatura actual, y una lista de prendas
-
 posibles que el usuario podria tener ya que suponemos las hbaia creado previamente
+
+- Decidi usar una interface y una clase con un class method para implementar el intercambio de servicios de obtencion del clima (Igualmente tengo
+bastantes dudas al respecto de si era eso lo que pedia)
 */
 
 //Cosas que no entendi:
-/*
-- Toda la parte de los gastos se quedaron en ideas por no saber realmente como implementarlo 
-- El tema de la API me resulto algo confuso para implementar
+/* 
+- El tema de la API me resulto algo confuso para implementar al al igual que toda la parte del stakeholder, asi que hice lo que
+entendi y pude
 */
