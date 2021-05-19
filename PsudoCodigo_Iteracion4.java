@@ -38,7 +38,7 @@ enum Trama{
 
 clase Borrador{
     Tipo tipo;
-    Trama trama = LISA;
+    Trama trama = Trama.LISA;
     Material material;
     Color colorPrincipal;
     Color colorSecundario;
@@ -118,24 +118,29 @@ clase Prenda{
 
 //--------------UNIFORME--------------
 
-clase abtracta Uniforme {
+clase Uniforme {
 
     Prenda parteSup;
     Prenda parteInf;
     Prenda calzado;
 
     Uniforme(Prenda parteSuperior,Prenda parteInferior,Prenda calzado) {
-        verificarUniforme(parteSuperior,parteInferior,calzado);
         this.parteSuperior = parteSuperior;
         this.parteInferior = parteInferior;
         this.calzado = calzado;
     }
+
+    static Uniforme fabricar(Sastre sastre)
+       return new Uniforme(
+          sastre.fabricarParteSuperior(),
+          sastre.fabricarParteInferior(),
+          sastre.fabricarCalzado())
 }
 
 interface Sastre {
-    method fabricarParteSuperior();
-    method fabricarParteInferior();
-    method fabricarCalzado();
+    Prenda fabricarParteSuperior();
+    Prenda fabricarParteInferior();
+    Prenda fabricarCalzado();
 }
 
 class SastreSanJuan implements Sastre {
@@ -181,7 +186,7 @@ clase SugeridorDeAtuendos {
     Double temperaturaActual;
 
     SugeridorDeAtuendos(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
-        this.temperaturaActual = ServicioDeClima.getWeather(ciudadDondeSeEncuentra)
+        this.temperaturaActual = ServicioDeClima.obtenerClima(ciudadDondeSeEncuentra)
             .get(0)
             .get("Temperature")
             .get("Value");
