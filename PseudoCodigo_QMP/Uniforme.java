@@ -1,7 +1,7 @@
 
 //--------------UNIFORME--------------
 
-clase Uniforme {
+class Uniforme {
 
     Prenda parteSup;
     Prenda parteInf;

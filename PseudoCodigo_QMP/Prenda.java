@@ -1,7 +1,7 @@
 
 //---------------PRENDA-------------------//
 
-clase Borrador{
+class Borrador{
     Tipo tipo;
     Trama trama = Trama.LISA;
     Material material;
@@ -21,7 +21,7 @@ clase Borrador{
 
     void setAspectoPrincipal(Color colorPrincipalPrenda,Material materialPrenda){
         if(!materialValido(materialPrenda)){
-            tirar excepcionMaterialInvalido("El material no esta disponible para ese tipo")
+            throw excepcionMaterialInvalido("El material no esta disponible para ese tipo")
         }
         requireNotNull(colorPrincipalPrenda):
         requireNotNull(materialPrenda);
@@ -49,7 +49,7 @@ clase Borrador{
     }   
 }
 
-clase Prenda{
+class Prenda{
     Tipo tipo;
     Trama trama;
     Categoria categoria;
