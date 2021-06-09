@@ -16,7 +16,7 @@ class Atuendo{
 
 }
 
-class SugeridorDeAtuendos {
+abstract class SugeridorDeAtuendos {
   List<Prenda> prendasPosibles; // Seria la lista de prendas del usuario
   String ciudadDondeSeEncuentra;
   ServicioDeClima servicioDeClima;
