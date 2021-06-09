@@ -113,4 +113,7 @@ o atributos que deberia tener especialmente enfocados a esta iteracion
 alcanza con que dos usuarios tengan en su lista de guardarropas el mismo guardarropas ya que ese guardarropas solo
 podra ser accedido por quienes lo tengan en su lista, ya sea uno o mas usuarios
 
+-Simplifique el diagrama de clases para mostrar unicamente las relaciones mas importantes para la comunicacion del
+diseño (Lo puse como una imagen nueva)
+
  */
