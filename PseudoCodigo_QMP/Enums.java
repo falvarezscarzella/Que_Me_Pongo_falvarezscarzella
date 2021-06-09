@@ -36,3 +36,7 @@ enum Material{
 enum Trama{
     LISA,RAYADA,LUNARES,CUADROS,ESTAMPADA;
 }
+
+enum Alerta {
+    STORM, HAIL;
+}

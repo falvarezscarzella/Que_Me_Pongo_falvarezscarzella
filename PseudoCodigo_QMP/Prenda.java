@@ -1,84 +1,91 @@
 
 //---------------PRENDA-------------------//
 
-class Borrador{
-    Tipo tipo;
-    Trama trama = Trama.LISA;
-    Material material;
-    Color colorPrincipal;
-    Color colorSecundario;
+class Borrador {
+  Tipo tipo;
+  Trama trama = Trama.LISA;
+  Material material;
+  Color colorPrincipal;
+  Color colorSecundario;
 
- Borrador(Tipo tipo){
-        requireNotNull(tipo);
-        this.tipo = tipo;
+  Borrador(Tipo tipo) {
+    requireNotNull(tipo);
+    this.tipo = tipo;
+  }
+
+  boolean materialValido(Material materialPrenda) {
+    return tipo.getMaterialesDisponibles().contains(materialPrenda);
+  }
+
+  //Setteo obligatorio (Color Principal y Material)
+
+  void setAspectoPrincipal(Color colorPrincipalPrenda, Material materialPrenda) {
+    if (!materialValido(materialPrenda)) {
+      throw excepcionMaterialInvalido("El material no esta disponible para ese tipo")
     }
+    requireNotNull(colorPrincipalPrenda):
+    requireNotNull(materialPrenda);
+    material = materialPrenda;
+    colorPrincipal = colorPrincipalPrenda;
+  }
 
-    boolean materialValido(Material materialPrenda){
-        return tipo.getMaterialesDisponibles().contains(materialPrenda);
-    }
+  //Setteo opcional (Trama y Color Secundario)
 
-    //Setteo obligatorio (Color Principal y Material)
+  void setColorSecundario(Color colorSecundarioPrenda) {
+    requireNotNull(colorSecundarioPrenda);
+    colorSecundario = colorSecundarioPrenda;
+  }
 
-    void setAspectoPrincipal(Color colorPrincipalPrenda,Material materialPrenda){
-        if(!materialValido(materialPrenda)){
-            throw excepcionMaterialInvalido("El material no esta disponible para ese tipo")
-        }
-        requireNotNull(colorPrincipalPrenda):
-        requireNotNull(materialPrenda);
-        material = materialPrenda;
-        colorPrincipal = colorPrincipalPrenda;
-    }
+  void setTrama(Trama tramaPrenda) {
+    requireNotNull(tramaPrenda);
+    trama = tramaPrenda;
+  }
 
-    //Setteo opcional (Trama y Color Secundario)
+  //Crear prenda con las caracteristicas elegidas
 
-    void setColorSecundario(Color colorSecundarioPrenda){
-        requireNotNull(colorSecundarioPrenda);
-        colorSecundario = colorSecundarioPrenda;
-    }
-    void setTrama(Trama tramaPrenda){
-        requireNotNull(tramaPrenda);
-        trama = tramaPrenda;
-    }
+  Prenda crearPrenda()
 
-    //Crear prenda con las caracteristicas elegidas
-
-    Prenda crearPrenda()
-        Prenda nuevaPrenda = new Prenda();
-        nuevaPrenda.setCaracteristicas(tipo, trama, material, colorPrincipal, colorSecundario);
+  Prenda nuevaPrenda = new Prenda();
+        nuevaPrenda.setCaracteristicas(tipo,trama,material,colorPrincipal,colorSecundario);
         return nuevaPrenda;
-    }   
+}
 }
 
-class Prenda{
-    Tipo tipo;
-    Trama trama;
-    Categoria categoria;
-    Double temperaturaMax;
-    Material material;
-    Color colorPrincipal;
-    Color colorSecundario;
-    
-    void setCaracteristicas(Tipo tipo,Trama trama,Material material,Color colorPrincipal,Color colorSecundario) {
-        this.tipo = tipo;
-        this.categoria = tipo.getCategoria();
-        this.temperaturaMax = tipo.getTemperaturaMax();
-        this.trama = trama;
-        this.material = material;
-        this.colorPrincipal = colorPrincipal;
-        this.colorSecundario = colorSecundario;
-    }
+class Prenda {
+  Tipo tipo;
+  Trama trama;
+  Categoria categoria;
+  Double temperaturaMax;
+  Material material;
+  Color colorPrincipal;
+  Color colorSecundario;
+  Alerta tipoAlertaSoportada;
 
-    Categoria getCategoria() {
-        return categoria;
-    }
+  void setCaracteristicas(Tipo tipo, Trama trama, Material material, Color colorPrincipal, Color colorSecundario) {
+    this.tipo = tipo;
+    this.categoria = tipo.getCategoria();
+    this.temperaturaMax = tipo.getTemperaturaMax();
+    this.trama = trama;
+    this.material = material;
+    this.colorPrincipal = colorPrincipal;
+    this.colorSecundario = colorSecundario;
+  }
 
-    Boolean cumpleCondicionTemperatura(Double temperatura) {
-        return temperaturaMax <= temperatura;
-    }
+  Categoria getCategoria() {
+    return categoria;
+  }
 
-    Boolean esDeCategoria(Categoria OtraCategoria) {
-        return OtraCategoria == categoria;
-    }
+  Boolean cumpleCondicionTemperatura(Double temperatura) {
+    return temperaturaMax <= temperatura;
+  }
+
+  Boolean esDeCategoria(Categoria OtraCategoria) {
+    return OtraCategoria == categoria;
+  }
+
+  Boolean sePuedeUsarEnEsaAlerta(List<String> alertasList) {
+    return alertasList.contains(tipoAlertaSoportada);
+  }
 }
 
 /*  

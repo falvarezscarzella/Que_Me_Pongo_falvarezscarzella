@@ -1,0 +1,35 @@
+class Empleado {
+  List<Usuario> usuarios; //Podria ser una clase repositorio de usuarios
+  SugeridorDeAtuendo atuendo;
+  List<Atuendo> listaAtuendos = new ArrayList<>();
+
+  void sugerirleAUnUsuario(){
+      //Esto nose si se puede
+
+      atuendo = new SugeridorSegunAlerta();
+      listaDeAtuendos.add(atuendo.crearAtuendoSugerido());
+      atuendo = new SugeridorSegunTemperatura();
+      listaDeAtuendos.add(atuendo.crearAtuendoSugerido());
+   }
+
+  void cargarListaDeSugerenciasDiarias(){
+    usuarios.stream().forEach(usuario -> usuario.cargarSugerencias(listaAtuendos));
+  }
+
+  void terminarDia(){
+    usuarios.stream().forEach(usuario -> usuario.getListaDiariaDeSugerencias().clear());
+  }
+
+  void alertasPublicadas(ServicioDeClima clima){
+    // Se podria hacer un hashMap Date,Alerta para poder gestionar cuando se publican
+    clima.getHistorialAlertas();
+  }
+
+  void enviarMail(ServicioDeClima clima) {
+      if (clima.hayNuevaAlerta()) {
+        List<String> alertas = clima.obtenerAlertas()
+        usuarios.forEach(usuario -> ServicioMail.enviar("Se genero una nueva alerta:" + alertas.get(alertas.size()-1), usuario.getEmail()));
+      }
+  }
+
+}

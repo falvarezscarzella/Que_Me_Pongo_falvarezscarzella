@@ -1,0 +1,10 @@
+class NotificacionLlevarParaguas {
+  boolean tormenta(List<String> alertas) {
+      return alertas.contains("STORM");
+  }
+
+  void recibirAlertas(List<String> alertas) {
+    if(this.tormenta(alertas))
+      NotificacionServicio.notificar("Se le recomienda salir con paraguas, alerta de Tormenta");
+  }
+}
