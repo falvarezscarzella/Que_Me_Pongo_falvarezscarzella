@@ -9,3 +9,7 @@ Notas: Revisar al final de todo del pseudo-codigo
 Quinta Iteracion: 27/05/21
 Notas: El diagrama de clases esta simplificado a unicamente lo de esta iteracion
 Para mas info mirar las notas al final del archivo de guardarropas
+
+Sexta Iteracion: 9/06/21
+Notas: Mo se implemento el ultimo requisito pero te explico como se implementaria 
+en comentarios del codigo
