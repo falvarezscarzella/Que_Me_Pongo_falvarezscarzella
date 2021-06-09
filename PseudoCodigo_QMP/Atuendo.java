@@ -17,75 +17,40 @@ class Atuendo{
 }
 
 class SugeridorDeAtuendos {
-  List<Prenda> prendasPosibles; // Seria la lista de prendas del usuario
-  String ciudadDondeSeEncuentra;
-  ServicioDeClima servicioDeClima;
+    List<Prenda> prendasPosibles; // Seria la lista de prendas del usuario
+    String ciudadDondeSeEncuentra;
+    ServicioDeClima servicioDeClima;
 
-  SugeridorDeAtuendos(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
-    this.ciudadDondeSeEncuentra = ciudadDondeSeEncuentra
-    this.prendasPosibles = prendasPosibles;
-  }
-
-  Prenda sugerirParteSuperior() {}
-  Prenda sugerirParteInferior() {}
-  // Y asi con accesorios y calzado
-
-  Atuendo crearAtuendoSugerido() {
-    return new Atuendo(
-        this.sugerirParteSuperior(),
-        this.sugerirParteInferior(),
-        this.sugerirCalzado(),
-        this.sugerirAccesorio()
-    )
-  }
-}
-
-class SugeridorSegunTemperatura implements SugeridorDeAtuendos {
-    Double temperaturaActual;
-
-    SugeridorSegunTemperatura(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
-      super(ciudadDondeSeEncuentra, prendasPosibles);
-      this.temperaturaActual = servicioDeClima.obtenerClima(ciudadDondeSeEncuentra);
+    SugeridorDeAtuendos(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
+        this.ciudadDondeSeEncuentra = ciudadDondeSeEncuentra
+        this.prendasPosibles = prendasPosibles;
     }
 
-    @Override
     Prenda sugerirParteSuperior() {
         SugeridorDePrendas sugeridorParteSuperior = new SugeridorDePrendas(temperaturaActual,Categoria.PARTE_SUP);
         return sugeridorParteSuperior.sugerirPrenda(prendasPosibles);
     }
 
-    @Override
     Prenda sugerirParteInferior() {
+        Double temperaturaActual = servicioDeClima.obtenerClima(ciudadDondeSeEncuentra)
         SugeridorDePrendas sugeridorParteInferior = new SugeridorDePrendas(temperaturaActual,Categoria.PARTE_INF);
         return sugeridorParteSuperior.sugerirPrenda(prendasPosibles);
     }
-}
 
-class SugeridorSegunAlerta implements SugeridorDeAtuendos {
-    List<String> alertasRecientes;
+    // Y asi con accesorios y calzado
 
-    SugeridorSegunTemperatura(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
-      super(ciudadDondeSeEncuentra, prendasPosibles);
-      this.alertasRecientes = servicioDeClima.obtenerAlertas(ciudadDondeSeEncuentra);
-    }
-
-    @Override
-    Prenda sugerirParteSuperior() {
-          SugeridorDePrendas sugeridorParteSuperior = new SugeridorDePrendas(Categoria.PARTE_SUP);
-          sugeridorParteSuperior.set(Alertas alerta)
-          return sugeridorParteSuperior.sugerirPrenda(prendasPosibles);
-    }
-
-    @Override
-    Prenda sugerirParteInferior() {
-        SugeridorDePrendas sugeridorParteInferior = new SugeridorDePrendas(temperaturaActual,Categoria.PARTE_INF);
-        return sugeridorParteSuperior.sugerirPrenda(prendasPosibles);
+    Atuendo crearAtuendoSugerido() {
+        return new Atuendo(
+            this.sugerirParteSuperior(),
+            this.sugerirParteInferior(),
+            this.sugerirCalzado(),
+            this.sugerirAccesorio()
+        )
     }
 }
 
-clase SugeridorDePrendas {
+class SugeridorDePrendas {
     Double temperatura;
-    List<String> alertasList = new ArrayList<>();
     Categoria categoria;
 
     SugeridorDePrendas(Double temperatura,Categoria categoria) {
@@ -93,25 +58,54 @@ clase SugeridorDePrendas {
         this.categoria = categoria;
     }
 
-    SugeridorDePrendas(List<String> alertas,Categoria categoria) {
-      this.alertasList = alertas;
-      this.categoria = categoria;
-    }
-
-    //Se podria hacer lo mismo que con el sugeridor de atuendos y separarlo en dos clases
-
-    Prenda sugerirPrendaSegunTemperatura(List<Prenda> prendasPosibles) {
+    Prenda sugerirPrenda(List<Prenda> prendasPosibles) {
        return prendasPosibles.stream()
-          .filter(prenda -> prenda.cumpleCondicionTemperatura(temperatura) && prenda.esDeCategoria(categoria))
-          .findAny();
-    }
-
-    Prenda sugerirPrendaSegunAlerta(List<Prenda> prendasPosibles) {
-        return prendasPosibles.stream()
-          .filter(prenda -> prenda.sePuedeUsarEnEsaAlerta() && prenda.esDeCategoria(categoria))
-          .findAny();
+       .filter(prenda -> prenda.cumpleCondicionTemperatura(temperatura) && prenda.esDeCategoria(categoria))
+       .findAny();
     }
 }
+
+interface ServicioDeClima{
+    Double obtenerClima(String ciudad);
+}
+
+class ServicioDeClimaAccuWeather implements ServicioDeClima{
+    ClimaAPI api;
+
+    ServicioDeClimaAccuWeather(AccuWeatherAPI apiNueva) {
+        this.api = apiNueva;
+    }
+
+    Double obtenerClima(String ciudad) {
+        return api.getWeather(ciudad)
+        .get(0)
+        .get("Temperature")
+        .get("Value")
+        .toDegrees();
+    }
+}
+
+class AccuWeatherAPI{
+
+    public final List<Map<String, Object>> getWeather(String ciudad) {
+		return Arrays.asList(new HashMap<String, Object>(){{
+			put("DateTime", "2019-05-03T01:00:00-03:00");
+			put("EpochDateTime", 1556856000);
+			put("WeatherIcon", 33);
+			put("IconPhrase", "Clear");
+			put("IsDaylight", false);
+			put("PrecipitationProbability", 0);
+			put("MobileLink", "http://m.accuweather.com/en/ar/villa-vil/7984/");
+			put("Link", "http://www.accuweather.com/en/ar/villa-vil/7984");
+			put("Temperature", new HashMap<String, Object>(){{
+				put("Value", 85);
+				put("Unit", "F");
+				put("UnitType", 18);
+			}});
+		}});
+	}
+}
+
 
 
 //Notas QMP4:
