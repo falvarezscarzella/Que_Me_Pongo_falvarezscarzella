@@ -11,5 +11,5 @@ Notas: El diagrama de clases esta simplificado a unicamente lo de esta iteracion
 Para mas info mirar las notas al final del archivo de guardarropas
 
 Sexta Iteracion: 9/06/21
-Notas: Mo se implemento el ultimo requisito pero te explico como se implementaria 
-en comentarios del codigo
+Notas: No se implementaron algunos requisitos pero se comentaron a lo largo del codigo
+
