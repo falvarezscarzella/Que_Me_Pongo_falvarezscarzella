@@ -16,7 +16,7 @@ class Atuendo{
 
 }
 
-class SugeridorDeAtuendos {
+abstract class SugeridorDeAtuendos {
   List<Prenda> prendasPosibles; // Seria la lista de prendas del usuario
   String ciudadDondeSeEncuentra;
   ServicioDeClima servicioDeClima;
@@ -40,7 +40,7 @@ class SugeridorDeAtuendos {
   }
 }
 
-class SugeridorSegunTemperatura implements SugeridorDeAtuendos {
+class SugeridorSegunTemperatura extends SugeridorDeAtuendos {
     Double temperaturaActual;
 
     SugeridorSegunTemperatura(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
@@ -61,7 +61,7 @@ class SugeridorSegunTemperatura implements SugeridorDeAtuendos {
     }
 }
 
-class SugeridorSegunAlerta implements SugeridorDeAtuendos {
+class SugeridorSegunAlerta extends SugeridorDeAtuendos {
     List<String> alertasRecientes;
 
     SugeridorSegunTemperatura(String ciudadDondeSeEncuentra,List<Prenda> prendasPosibles) {
