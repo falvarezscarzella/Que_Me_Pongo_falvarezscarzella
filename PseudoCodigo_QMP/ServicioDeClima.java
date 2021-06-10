@@ -23,7 +23,7 @@ clase ServicioDeClimaAccuWeather implements ServicioDeClima{
     }
 
     List<String> obtenerAlertas() {
-        Map<String, Object> alertas = api.getAlertas(this.ciudad);
+        Map<String, Object> alertas = this.getAlertas(this.ciudad);
         return (List<String>) alertas.get("CurrentAlerts");
     }
 
@@ -37,9 +37,14 @@ clase ServicioDeClimaAccuWeather implements ServicioDeClima{
 
     Boolean hayNuevaAlerta(){
         List<String> historialAlertasTemp = historialAlertas;
-        actualizarHistorialAlertas();
-        if historialAlertasTemp.size() != historialAlertas.size()
-            return True;
+        this.actualizarHistorialAlertas();
+        return historialAlertasTemp.size() != historialAlertas.size();
+    }
+
+    Map<String, Object> getAlertas(String ciudad) {
+        return api.getWeather(this.ciudad)
+        .get(0)
+        .get("CurrentAlerts");
     }
 }
 
@@ -58,17 +63,11 @@ clase AccuWeatherAPI{
 				put("Value", 85);
 				put("Unit", "F");
 				put("UnitType", 18);
+            put("CurrentAlerts", Arrays.asList("STORM","HAIL"));
 			}});
 		}});
 	}
 
-	Map<String, Object> alertas = new HashMap() {{
-        put("CurrentAlerts", Arrays.asList("STORM","HAIL"));
-    }};
-
-    Map<String, Object> getAlertas(String ciudad) {
-        return alertas;
-    }
 }
 
 /*
