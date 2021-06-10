@@ -2,17 +2,17 @@
 //----------USUARIO------------//
 
 class Usuario {
-    Map<String, Boolean> configuracion = new HashMap<>(); //A la hora de notificar se fija si cumple la configuracion aca.
     List<Guardaropas> listaGuardaropas = new ArrayList<>();
-    List<Atuendo> listSugerencias = new ArrayList<>();
+    List<String> alertasDeInteres = new ArrayList<>();
+    Atuendo sugerenciaDiaria;
     String mail;
-
-    String getEmail() {
-        return email;
-    }
 
     void agregarGuardarropas(String nombre) {
         listaGuardaropas.add(new Guardaropas(nombre));
+    }
+
+    void agregarAlertaDeInteres(String alerta) {
+        alertaDeInteres.add(alerta);
     }
 
     List<Guardaropas> getGuardarropas() {
@@ -27,8 +27,25 @@ class Usuario {
         return clima.getHistorialAlertas();
     }
 
-    void cargarSugerencias(List <Atuendo> lista){
-        listaSugerencias.addAll(lista);
+    void actualizarSugerenciaDiaria(){
+        List<Atuendo> listaSugerencias = new ArrayList<>();
+        listaSugerencias.add(new SugeridorSegunAlerta.crearAtuendoSugerido());
+        listaSugerencias.add(new SugeridorSegunTemperatura.crearAtuendoSugerido());
+        sugerenciaDiaria = listaSugerencias.findAny();
+    }
+
+    Boolean alertaDeInteres(String alerta) {
+        alertasDeInteres.contains(alerta);
+    }
+
+    void notificarAlerta() {
+        if (clima.hayNuevaAlerta()) {
+            String ultimaAlerta = clima.obtenerAlertas().get(alertas.size()-1);
+            if(this.alertaDeInteres(ultimaAlerta)){ 
+            ServicioMail.enviar("Se genero una nueva alerta:" + ultimaAlerta, mail);
+            }
+        }
+      }
     }
     //etc.
 }

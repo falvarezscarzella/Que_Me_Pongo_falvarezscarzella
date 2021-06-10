@@ -83,7 +83,7 @@ class SugeridorSegunAlerta extends SugeridorDeAtuendos {
     }
 }
 
-clase SugeridorDePrendas {
+class SugeridorDePrendas {
     Double temperatura;
     List<String> alertasList = new ArrayList<>();
     Categoria categoria;
